@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+		PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+		"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<!-- xmI 有2个大作用。 第- -个spring的xml ，放对象的容器，这个是mybatis 的xmI ， 他是链接数据库的 -->
+
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver"/>
+				<property name="url" value="jdbc:mysql://localhost:3306/loan"/>
+				<property name="username" value="root"/>
+				<property name="password" value="root"/>
+			</dataSource>
+		</environment>
+	</environments>
+<mappers>
+	<mapper resource="com/xh/dao/CityDAO.xml"/>
+	<mapper resource="com/xh/dao/CustomerDAO.xml"/>
+	<mapper resource="com/xh/dao/DeptDAO.xml"/>
+	<mapper resource="com/xh/dao/EmpDAO.xml"/>
+	<mapper resource="com/xh/dao/ClazzDAO.xml"/>
+	<mapper resource="com/xh/dao/IdcardDAO.xml"/>
+	<mapper resource="com/xh/dao/JobDAO.xml"/>
+	<mapper resource="com/xh/dao/SchoolDAO.xml"/>
+	<mapper resource="com/xh/dao/StudentDAO.xml"/>
+</mappers>
+</configuration>

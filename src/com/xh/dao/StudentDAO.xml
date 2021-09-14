@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.dao.StudentDAO">
+  <resultMap id="BaseResultMap" type="com.xh.bean.Student">
+    <id column="stuId" jdbcType="INTEGER" property="stuid" />
+    <result column="studentName" jdbcType="VARCHAR" property="studentname" />
+    <result column="studentJob" jdbcType="INTEGER" property="studentjob" />
+    <result column="claId" jdbcType="INTEGER" property="claid" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    stuId, studentName, studentJob, claId
+  </sql>
+  <select id="selectByExample" parameterType="com.xh.bean.StudentExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from student
+    where stuId = #{stuid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from student
+    where stuId = #{stuid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xh.bean.StudentExample">
+    delete from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xh.bean.Student">
+    insert into student (stuId, studentName, studentJob, 
+      claId)
+    values (#{stuid,jdbcType=INTEGER}, #{studentname,jdbcType=VARCHAR}, #{studentjob,jdbcType=INTEGER}, 
+      #{claid,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xh.bean.Student">
+    insert into student
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="stuid != null">
+        stuId,
+      </if>
+      <if test="studentname != null">
+        studentName,
+      </if>
+      <if test="studentjob != null">
+        studentJob,
+      </if>
+      <if test="claid != null">
+        claId,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="stuid != null">
+        #{stuid,jdbcType=INTEGER},
+      </if>
+      <if test="studentname != null">
+        #{studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="studentjob != null">
+        #{studentjob,jdbcType=INTEGER},
+      </if>
+      <if test="claid != null">
+        #{claid,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xh.bean.StudentExample" resultType="java.lang.Long">
+    select count(*) from student
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update student
+    <set>
+      <if test="record.stuid != null">
+        stuId = #{record.stuid,jdbcType=INTEGER},
+      </if>
+      <if test="record.studentname != null">
+        studentName = #{record.studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="record.studentjob != null">
+        studentJob = #{record.studentjob,jdbcType=INTEGER},
+      </if>
+      <if test="record.claid != null">
+        claId = #{record.claid,jdbcType=INTEGER},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update student
+    set stuId = #{record.stuid,jdbcType=INTEGER},
+      studentName = #{record.studentname,jdbcType=VARCHAR},
+      studentJob = #{record.studentjob,jdbcType=INTEGER},
+      claId = #{record.claid,jdbcType=INTEGER}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xh.bean.Student">
+    update student
+    <set>
+      <if test="studentname != null">
+        studentName = #{studentname,jdbcType=VARCHAR},
+      </if>
+      <if test="studentjob != null">
+        studentJob = #{studentjob,jdbcType=INTEGER},
+      </if>
+      <if test="claid != null">
+        claId = #{claid,jdbcType=INTEGER},
+      </if>
+    </set>
+    where stuId = #{stuid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xh.bean.Student">
+    update student
+    set studentName = #{studentname,jdbcType=VARCHAR},
+      studentJob = #{studentjob,jdbcType=INTEGER},
+      claId = #{claid,jdbcType=INTEGER}
+    where stuId = #{stuid,jdbcType=INTEGER}
+  </update>
+</mapper>

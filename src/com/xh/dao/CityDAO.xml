@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace:映射文件的命名空间，规范是映射文件的全路径-->
+<!--作用：是一个路径，用来查找下面的id-->
+<mapper namespace="com.xh.dao.CityDao">
+  <resultMap id="BaseResultMap" type="com.xh.bean.City">
+    <!--下面的标签映射实现实体类-->
+    <!--id只有一个-->
+    <!--colimn是数据库中的列名   很多是   下划线-->
+    <!--property是实体类中的属性   一般是驼峰-->
+    <id column="cityId" property="cityId" />
+    <result column="cityName" property="cityName" />
+  </resultMap>
+
+
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    cityId, cityName
+  </sql>
+  <select id="selectByExample" parameterType="com.xh.bean.CityExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from city
+    where cityId = #{cityId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from city
+    where cityId = #{cityId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xh.bean.CityExample">
+    delete from city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xh.bean.City">
+    insert into city (cityId, cityName)
+    values (#{cityId,jdbcType=INTEGER}, #{cityName,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xh.bean.City">
+    insert into city
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="cityId != null">
+        cityId,
+      </if>
+      <if test="cityName != null">
+        cityName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="cityId != null">
+        #{cityId,jdbcType=INTEGER},
+      </if>
+      <if test="cityName != null">
+        #{cityName,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xh.bean.CityExample" resultType="java.lang.Long">
+    select count(*) from city
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+
+  <update id="updateByExampleSelective" parameterType="map">
+    update city
+    <set>
+      <if test="record.cityId != null">
+        cityId = #{record.cityId,jdbcType=INTEGER},
+      </if>
+      <if test="record.cityName != null">
+        cityName = #{record.cityName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update city
+    set cityId = #{record.cityId,jdbcType=INTEGER},
+    cityName = #{record.cityName,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xh.bean.City">
+    update city
+    <set>
+      <if test="cityName != null">
+        cityName = #{cityName,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where cityId = #{cityId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xh.bean.City">
+    update city
+    set cityName = #{cityName,jdbcType=VARCHAR}
+    where cityId = #{cityId,jdbcType=INTEGER}
+  </update>
+
+
+  <!--多表的关系 需要程序员自定义一个 resultMap的标签                           extends 继承 -->
+  <resultMap id="selectAreasByCityIdRM" type="com.xh.bean.City" extends="BaseResultMap">
+    <collection property="areaList" ofType="com.xh.bean.Area">
+      <id column="areaId" jdbcType="INTEGER" property="areaId" />
+      <result column="areaName" jdbcType="VARCHAR" property="areaName" />
+      <result column="cityId" jdbcType="INTEGER" property="cityId" />
+    </collection>
+  </resultMap>
+  
+  <select id="dongTai" resultType="java.util.Map">
+    select * from city c,area q
+    <where>
+      c.cityId=q.cityId
+      <if test="cityId !=null and cityId != '' ">
+        and cityId=#{id}
+      </if>
+      <if test="cityName !=null and cityName != '' ">
+        and cityName=#{name}
+      </if>
+
+      <if test="qid !=null and qid != '' ">
+        and qid=#{id}
+      </if>
+      <if test="qname !=null and qname != '' ">
+        and qname=#{name}
+      </if>
+      <if test="cityId !=null and cityId != '' ">
+        and cityId=#{id}
+      </if>
+    </where>
+  </select>
+
+  <!-- 一对多 查询-->
+  <select id="selectAreasByCityId" resultMap="selectAreasByCityIdRM" parameterType="int">
+      SELECT * FROM city c
+    join area a
+    on c.cityId = a.cityId
+    where c.cityId=#{cityId}
+    </select>
+
+  <!-- 一对多 查询-->
+  <select id="selectAreasByCityName" resultMap="selectAreasByCityIdRM" parameterType="string">
+      SELECT * FROM city c
+    join area a
+    on c.cityId = a.cityId
+    where c.cityName=#{cityName}
+    </select>
+</mapper>

@@ -1,0 +1,256 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xh.dao.SchoolDAO">
+  <resultMap id="BaseResultMap" type="com.xh.bean.School">
+    <id column="scId" jdbcType="INTEGER" property="scid" />
+    <result column="schoolName" jdbcType="VARCHAR" property="schoolname" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    scId, schoolName
+  </sql>
+  <select id="selectByExample" parameterType="com.xh.bean.SchoolExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from school
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+    <if test="limit != null">
+      <if test="offset != null">
+        limit ${offset}, ${limit}
+      </if>
+      <if test="offset == null">
+        limit ${limit}
+      </if>
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from school
+    where scId = #{scid,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+    delete from school
+    where scId = #{scid,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.xh.bean.SchoolExample">
+    delete from school
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.xh.bean.School">
+    insert into school (scId, schoolName)
+    values (#{scid,jdbcType=INTEGER}, #{schoolname,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.xh.bean.School">
+    insert into school
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="scid != null">
+        scId,
+      </if>
+      <if test="schoolname != null">
+        schoolName,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="scid != null">
+        #{scid,jdbcType=INTEGER},
+      </if>
+      <if test="schoolname != null">
+        #{schoolname,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.xh.bean.SchoolExample" resultType="java.lang.Long">
+    select count(*) from school
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update school
+    <set>
+      <if test="record.scid != null">
+        scId = #{record.scid,jdbcType=INTEGER},
+      </if>
+      <if test="record.schoolname != null">
+        schoolName = #{record.schoolname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update school
+    set scId = #{record.scid,jdbcType=INTEGER},
+      schoolName = #{record.schoolname,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.xh.bean.School">
+    update school
+    <set>
+      <if test="schoolname != null">
+        schoolName = #{schoolname,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where scId = #{scid,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.xh.bean.School">
+    update school
+    set schoolName = #{schoolname,jdbcType=VARCHAR}
+    where scId = #{scid,jdbcType=INTEGER}
+  </update>
+
+
+  <resultMap id="selectClazzBySchoolIdRM" type="com.xh.bean.School" extends="BaseResultMap">
+    <collection property="studentList" ofType="com.xh.bean.Student">
+      <id column="stuId" jdbcType="INTEGER" property="stuid" />
+      <result column="studentName" jdbcType="VARCHAR" property="studentname" />
+      <result column="studentJob" jdbcType="INTEGER" property="studentjob" />
+      <result column="claId" jdbcType="INTEGER" property="claid" />
+    </collection>
+  </resultMap>
+
+  <!--一对多的 查询-->
+  <resultMap id="selsectStudentBySchoolIdRM" type="com.xh.bean.School" extends="BaseResultMap">
+    <collection property="clazzList" ofType="com.xh.bean.Clazz" >
+      <result column="clazzId" jdbcType="INTEGER" property="clazzid" />
+      <result column="clazzName" jdbcType="VARCHAR" property="clazzname" />
+      <result column="schId" jdbcType="INTEGER" property="schid" />
+      <result column="clazzJob" jdbcType="INTEGER" property="clazzjob" />
+    </collection>
+
+    <collection property="studentList" ofType="com.xh.bean.Student">
+      <id column="stuId" jdbcType="INTEGER" property="stuid" />
+      <result column="studentName" jdbcType="VARCHAR" property="studentname" />
+      <result column="studentJob" jdbcType="INTEGER" property="studentjob" />
+      <result column="claId" jdbcType="INTEGER" property="claid" />
+    </collection>
+  </resultMap>
+  <!-- 1对多的查询-->
+  <select id="selectClazzBySchoolId"  resultMap="selectClazzBySchoolIdRM" parameterType="int">
+    select  distinct * from school s
+join clazz c on c.schId=s.scId
+	where s.scId = #{id}
+  </select>
+  <!-- 1对多对多 的查询-->
+  <select id="selsectStudentBySchoolId"  resultMap="selsectStudentBySchoolIdRM" parameterType="int">
+    select  distinct * from school s
+    join clazz c on c.schId=s.scId
+    join student st on st.claId= c.clazzId
+    where   s.scId = #{id}
+  </select>
+
+  <!-- N表联查, 随意传参数  随意返回值 多个参数-->
+  <select id="selsectStudentByParam" resultType="map" parameterType="map" >
+        select  distinct * from school s
+    join clazz c on c.schId=s.scId
+    join student st on st.claId= c.clazzId
+    <where>
+      <if test="id != null">
+        s.scId = #{id}
+      </if>
+      <if test="name != null">
+       and s.schoolName = #{name}
+      </if>
+    </where>
+  </select>
+
+  <!-- 多表联查  一对多 查询身份证-->
+  <resultMap id="selectIdcardByStudentIdRM" type="com.xh.bean.Student" extends="BaseResultMap">
+    <collection property="idcardList" ofType="com.xh.bean.Idcard">
+      <id column="cardId" jdbcType="INTEGER" property="cardid" />
+      <result column="name" jdbcType="VARCHAR" property="name" />
+      <result column="idNumber" jdbcType="VARCHAR" property="idnumber" />
+      <result column="sex" jdbcType="VARCHAR" property="sex" />
+      <result column="address" jdbcType="VARCHAR" property="address" />
+    </collection>
+  </resultMap>
+  <select id="selectIdcardByStudentId" resultMap="selectIdcardByStudentIdRM" parameterType="int">
+     select * from  student s join idcard i on
+      s.studentName = i.name where i.cardId =#{id}
+  </select>
+
+  <!-- 多对多 的 查询  根据职位查学生 -->
+  <resultMap id="selectJobByNameRM" type="com.xh.bean.School" extends="BaseResultMap">
+    <collection property="jobList" ofType="com.xh.bean.Job">
+    <id column="jobId" jdbcType="INTEGER" property="jobid" />
+    <result column="jobName" jdbcType="VARCHAR" property="jobname" />
+    </collection>
+  </resultMap>
+
+  <select id="selectJobByName" resultMap="selectJobByNameRM" parameterType="string">
+        	select *  from  clazz c join student s
+	on s.claId = c.clazzId join job j
+	on j.jobId = c.clazzJob where j.jobName = #{name}
+  </select>
+</mapper>
